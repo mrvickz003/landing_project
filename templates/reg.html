@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register | Billing Software</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0B0829, #1A1440);
+            color: #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container Styles */
+        .register-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 30px 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .register-container h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #FFD700;
+        }
+
+        .register-container form {
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 15px;
+        }
+
+        .register-container label {
+            text-align: left;
+            font-size: 0.9rem;
+            color: #D3D3D3;
+        }
+
+        .register-container input {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .register-container button {
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #FFFFFF;
+            font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .register-container button:hover {
+            background-color: #3B8E40;
+        }
+
+        .register-container p {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: #A9A9A9;
+        }
+    </style>
+</head>
+<body>
+    <div class="register-container">
+        <h1>Register</h1>
+        <form id="register-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+            <label for="gmail">Gmail:</label>
+            <input type="email" id="gmail" name="gmail" placeholder="Enter your email" required>
+            <label for="mobile">Mobile Number:</label>
+            <input type="tel" id="mobile" name="mobile" placeholder="Enter your mobile number" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" placeholder="Create a password" required>
+            <button type="submit">Register</button>
+        </form>
+        <p>Already have an account? <a href="/api/login/" style="color: #FFD700;">Login</a></p>
+    </div>
+    <script>
+        document.getElementById("register-form").onsubmit = async function(e) {
+            e.preventDefault();
+            try {
+                const response = await fetch('/api/register/', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        name: document.getElementById('name').value,
+                        gmail: document.getElementById('gmail').value,
+                        mobile: document.getElementById('mobile').value,
+                        password: document.getElementById('password').value,
+                    }),
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert(result.message || "Registration successful!");
+                    window.location.href = "/api/login/"; // Redirect to login on success
+                } else {
+                    alert(result.message || "Registration failed. Please try again.");
+                }
+            } catch (error) {
+                alert("An error occurred. Please try again later.");
+            }
+        };
+    </script>
+</body>
+</html>
